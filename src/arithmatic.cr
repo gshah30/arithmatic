@@ -1,4 +1,6 @@
 require "./utils"
+require "./rational"
+require "./primes"
 
 # TODO: Write documentation for `Arithmatic`
 module Arithmatic
