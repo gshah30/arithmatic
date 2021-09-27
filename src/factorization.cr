@@ -13,12 +13,11 @@ module Factorization
       }
       .tap {|factor_hash| factor_hash[n] += 1 if n != 1 }
   end
+
+  def self.pairs(n : Int32) : Array(Tuple(Int32, Int32))
+    (2..Math.sqrt(n).floor.to_i).compact_map{|i| n % i == 0 ? {i, n//i} : nil}
+  end
 end
 
-puts Time.local.millisecond
-
-puts PrimesRepo.cache_stopper
-puts Factorization.prime(10_70_54_45_712)
-puts PrimesRepo.cache_stopper
-
-puts puts Time.local.millisecond
+puts Factorization.prime(2_14_54_45_712)
+puts Factorization.pairs(240)

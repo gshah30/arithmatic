@@ -81,4 +81,6 @@ describe PrimesRepo do
       ]
     end
   end
+
+  # TODO: write missing method specs
 end

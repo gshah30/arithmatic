@@ -1,6 +1,7 @@
 require "./utils"
 
 module Numbers
+  # should this be made struct?
   class Rational
     def self.from(i : Int32)
       Rational.new i, 1
@@ -10,10 +11,7 @@ module Numbers
     @denominator : Int32
 
     def initialize(numerator : Int32, denominator : Int32)
-      numerator, denominator = Utils.quotients_from_division_by_gcd([numerator, denominator])
-
-      @numerator = numerator
-      @denominator = denominator
+      @numerator, @denominator = Utils.quotients_from_division_by_gcd([numerator, denominator])
     end
 
     def num

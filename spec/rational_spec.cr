@@ -44,7 +44,7 @@ describe Numbers do
         ]
         .each do |rns|
           it "performs binary operation {{op}}" do
-            sum = rns[0] + rns[1].as(Int32)
+            sum = rns[0] + rns[1].as Int32
             sum.should eq rns[2]
           end
         end
@@ -140,7 +140,7 @@ describe Numbers do
         RN.new(45, 5).to_i.should eq 9
       end
 
-      it "returns floow(x/y) when rational number is of the form x/y with y != 1" do
+      it "returns floor(x/y) when rational number is of the form x/y with y != 1" do
         RN.new(45, 6).to_i.should eq 7
       end
     end
