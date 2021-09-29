@@ -3,6 +3,7 @@ module PrimesRepo
     {% primes = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97] %}
     # prime[division_limit] should always be the prime number immediately less than sqrt of (primes.last + 1)
     # used this logic because could not find a way to calculate sqrt of (primes.last + 1) at compile time
+    # also this logic is more efficient that finding the sq root :P
     {% division_limit = 4 %}
 
     {% for i in (primes.last + 1)..n %}
@@ -102,9 +103,10 @@ module PrimesRepo
   end
 
   def self.prime?(n : Int32)
+    return false if n < 0
     return @@primes.includes?(n) if n <= @@primes.last
 
-    get_primes_upto(Math.sqrt(n).floor.to_i).any?{|p| n % p == 0}
+    get_primes_upto(Math.sqrt(n).floor.to_i).all?{|p| n % p != 0}
   end
 
   def self.cache_size

@@ -82,5 +82,27 @@ describe PrimesRepo do
     end
   end
 
+  describe ".prime?" do
+    context "when number to check is less than cache size" do
+      it "checks if a number is prime" do
+        PrimesRepo.prime?(48611).should be_true
+        PrimesRepo.prime?(48612).should be_false
+      end
+    end
+
+    context "when number to check is more than cache size" do
+      it "checks if a number is prime" do
+        PrimesRepo.prime?(104827).should be_true
+        PrimesRepo.prime?(104823).should be_false
+      end
+    end
+
+    context "when number to check is negative" do
+      it "considers negative numbers as not primes" do
+        PrimesRepo.prime?(-104827).should be_false
+      end
+    end
+  end
+
   # TODO: write missing method specs
 end

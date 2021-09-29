@@ -30,7 +30,7 @@ describe Numbers do
           [RN.new(68, 16), RN.new(50, 12), RN.new(101, 12)],
         ]
         .each do |rns|
-          it "performs binary operation {{op}}" do
+          it "performs binary operation +" do
             sum = rns[0] + rns[1]
             sum.should eq rns[2]
           end
@@ -43,16 +43,31 @@ describe Numbers do
           [RN.new(68, 16), 50, RN.new(217, 4)],
         ]
         .each do |rns|
-          it "performs binary operation {{op}}" do
+          it "performs binary operation +" do
             sum = rns[0] + rns[1].as Int32
             sum.should eq rns[2]
           end
         end
       end
+
+      # context "when one of the inputs is negative" do
+      #   [
+      #     [RN.new(10, 14), -RN.new(3, 21), RN.new(4, 7)],
+      #     [-RN.new(10, 5), RN.new(3, 10), -RN.new(17, 10)],
+      #     [RN.new(68, 16), -50, -RN.new(183, 4)],
+      #     [-RN.new(68, 16), 50, RN.new(-217, 4)]
+      #   ]
+      #   .each do |rns|
+      #     it "performs binary operation +" do
+      #       sum = rns[0] + rns[1]
+      #       sum.should eq rns[2]
+      #     end
+      #   end
+      # end
     end
 
     describe "#-" do
-      context "when both inputs are rational numbers" do
+      context "when both argument is rational number" do
         [
           [RN.new(10, 5), RN.new(3, 5), RN.new(7, 5)],
           [RN.new(68, 16), RN.new(50, 12), RN.new(1, 12)],
@@ -65,7 +80,7 @@ describe Numbers do
         end
       end
 
-      context "when second input is integer" do
+      context "when argument is integer" do
         [
           [RN.new(10, 5), 3, RN.new(-1, 1)],
           [RN.new(68, 16), 50, RN.new(-183, 4)],
@@ -75,6 +90,15 @@ describe Numbers do
             sum = rns[0] - rns[1].as(Int32)
             sum.should eq rns[2]
           end
+        end
+      end
+
+      context "when there is no argument" do
+        it "reverses the sign of the rational number" do
+          (-Rational.nine).negative?.should be_true
+          (-Rational.new -9, -1).negative?.should be_true
+          (-Rational.new -9, 1).negative?.should be_false
+          (-Rational.new 9, -1).negative?.should be_false
         end
       end
     end
@@ -136,12 +160,39 @@ describe Numbers do
     end
 
     describe "#to_i" do
-      it "returns x when rational number is of the form x/1" do
-        RN.new(45, 5).to_i.should eq 9
+      context "when rational number is of the form x/1" do
+        it "returns x" do
+          RN.new(45, 5).to_i.should eq 9
+        end
       end
 
-      it "returns floor(x/y) when rational number is of the form x/y with y != 1" do
-        RN.new(45, 6).to_i.should eq 7
+      context "when rational number is of the form x/y with y != 1" do
+        it "returns floor(x/y)" do
+          RN.new(45, 6).to_i.should eq 7
+        end
+      end
+    end
+
+    describe "#to_s" do
+      context "when rational number is positive" do
+        it "does not print sign" do
+          Rational.new(-37, -99).to_s.should eq "37/99"
+          Rational.new(37, 99).to_s.should eq "37/99"
+        end
+      end
+
+      context "when rational number is negative" do
+        it "prints the sign" do
+          Rational.new(-37, 99).to_s.should eq "-37/99"
+          Rational.new(37, -99).to_s.should eq "-37/99"
+        end
+      end
+
+      context "when rational number is an integer" do
+        it "does not print the denominator" do
+          Rational.eight.to_s.should eq "8"
+          (-Rational.eight).to_s.should eq "-8"
+        end
       end
     end
 

@@ -1,6 +1,8 @@
 require "./utils"
 require "./rational"
 require "./primes"
+require "./factorization"
+require "./power_product"
 
 # TODO: Write documentation for `Arithmatic`
 module Arithmatic
