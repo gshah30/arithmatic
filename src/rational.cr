@@ -1,13 +1,20 @@
 require "./utils"
 
 module Numbers
+
+  class InvalidRationalInitializationException < Exception
+    def initialize(value : String)
+      super "A rational number can not be initialized from the string #{value}"
+    end
+  end
+
   # should this be made struct?
   class Rational
 
     macro define_rational_integers(hash_node)
       {% for name, number in hash_node %}
       def self.{{name}}
-        Rational.from {{number}}
+        Rational[{{number}}]
       end
       {% end %}
     end
@@ -25,8 +32,17 @@ module Numbers
       nine: 9
     })
 
-    def self.from(i : Int32)
+    def self.[](i : Int32)
       Rational.new i, 1
+    end
+
+    def self.[](s : String)
+      s = "#{s}/1" if s.split('/').size == 1
+
+      raise InvalidRationalInitializationException.new s if !(/[0-9]+\/[0-9]+/ =~ s)
+
+      num, den = s.split('/').map &.to_i
+      Rational.new num, den
     end
 
     # @negative : Bool
@@ -58,7 +74,7 @@ module Numbers
     end
 
     def ==(i : Int32)
-      r = Rational.from i
+      r = Rational[i]
       num == r.num && den == r.den
     end
 
@@ -81,7 +97,7 @@ module Numbers
     macro define_bin_operations_with_integers(*bin_ops)
       {% for op in bin_ops %}
         def {{op.id}}(i : Int32)
-          self {{op.id}} Rational.from(i)
+          self {{op.id}} Rational[i]
         end
       {% end %}
     end

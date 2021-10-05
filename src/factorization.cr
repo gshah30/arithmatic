@@ -6,7 +6,7 @@ module Factorization
     negative = n < 0
 
     n = n.abs
-    return PowerProduct.new Hash(Int32, Rational){ n => Rational.one }, negative if PrimesRepo.prime? n
+    return PowerProduct(Int32).new Hash(Int32, Rational){ n => Rational.one }, negative if PrimesRepo.prime? n
 
     factor_hash = PrimesRepo
       .get_primes_upto(Math.sqrt(n).floor.to_i)
@@ -19,7 +19,7 @@ module Factorization
       end
 
     factor_hash[n] += 1 if n != 1
-    PowerProduct.new factor_hash.map{|k, v| {k, Rational.from(v)} }.to_h, negative
+    PowerProduct.new factor_hash.map{|k, v| {k, Rational[v]} }.to_h, negative
   end
 
   # TODO: handle negative inputs?
